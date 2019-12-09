@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuizzCollection;
+use App\Http\Resources\Quizzs;
 use App\Quizz;
 use Illuminate\Http\Request;
 
@@ -43,21 +44,21 @@ class QuizzController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Quizz $quiz
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Quizz $quiz)
     {
-        //
+        return new Quizzs($quiz);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Quizz $quiz
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Quizz $quiz)
     {
         //
     }
@@ -66,10 +67,10 @@ class QuizzController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Quizz $quiz
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Quizz $quiz)
     {
         //
     }
@@ -77,10 +78,10 @@ class QuizzController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Quizz $quiz
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Quizz $quiz)
     {
         //
     }
