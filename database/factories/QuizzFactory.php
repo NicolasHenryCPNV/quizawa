@@ -4,6 +4,7 @@
 
 use App\Quizz;
 use App\Classroom;
+use App\User;
 use Faker\Generator as Faker;
 
 $factory->define(Quizz::class, function (Faker $faker) {
@@ -12,5 +13,6 @@ $factory->define(Quizz::class, function (Faker $faker) {
         'description' => $faker->boolean(),
         'image' => Classroom::all()->random()->id,
         'active' => Classroom::all()->random()->id,
+        'user_id' => User::all()->random()->id,
     ];
 });

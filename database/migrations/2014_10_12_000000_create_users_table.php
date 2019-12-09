@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->boolean('admin');
             $table->boolean('creator');
             $table->rememberToken();
-            $table->bigInteger('classroom_id')->unsigned()->nullable();
+            $table->bigInteger('classroom_id')->unsigned();
             $table->softDeletes();
 
             // Foreing keys

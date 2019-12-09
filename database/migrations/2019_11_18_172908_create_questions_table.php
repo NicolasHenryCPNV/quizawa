@@ -17,7 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('question');
             $table->string('image');
-            $table->bigInteger('quizz_id')->unsigned()->nullable();
+            $table->bigInteger('quizz_id')->unsigned();
 
             // Foreing keys
             $table->foreign('quizz_id')->references('id')->on('quizzs');

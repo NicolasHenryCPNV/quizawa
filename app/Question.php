@@ -13,7 +13,7 @@ class Question extends Model
      * @var array
      */
     protected $fillable = [
-        'question', 'image'
+        'question', 'image', 'quizz_id'
     ];
 
     public function quizz()

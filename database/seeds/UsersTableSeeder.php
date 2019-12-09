@@ -1,5 +1,6 @@
 <?php
 
+use App\Classroom;
 use App\User;
 use Illuminate\Database\Seeder;
 
@@ -33,10 +34,7 @@ class UsersTableSeeder extends Seeder
             'classroom_id' => 1,
         ]);
         
-
-        factory(App\User::class, 29)->create()->each(function ($user) {
-            $user->classroom()->associate(factory(App\Classroom::class)->make());
-        });
+        factory(App\User::class, 29)->create();
 
     }
 }

@@ -11,8 +11,6 @@ class QuizzsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Quizz::class, 30)->create()->each(function ($quizz) {
-            $quizz->user()->associate(factory(App\User::class)->make());
-        });
+        factory(App\Quizz::class, 30)->create();;
     }
 }

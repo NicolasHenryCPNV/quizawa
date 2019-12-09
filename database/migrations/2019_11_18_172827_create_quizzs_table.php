@@ -20,7 +20,7 @@ class CreateQuizzsTable extends Migration
             $table->string('image');
             $table->boolean('active');
 
-            $table->bigInteger('user_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned();
 
             // Foreing keys
             $table->foreign('user_id')->references('id')->on('users');
