@@ -16,9 +16,11 @@ class Quizzs extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'private' => $this->private,
-            'classroom_id' => $this->classroom_id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'image' => $this->image,
+            'active' => $this->active,
+            'user_id' => $this->user_id,
         ];
     }
 }

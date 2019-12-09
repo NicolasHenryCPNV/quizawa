@@ -16,7 +16,7 @@ class QuizzController extends Controller
      */
     public function index()
     {
-        return new QuizzCollection(Quizz::all());
+        return new QuizzCollection(Quizz::withTrashed()->get());
     }
 
     /**
