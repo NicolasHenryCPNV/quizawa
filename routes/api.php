@@ -13,4 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::apiResource('users', 'Api\UserController')->only(['index']);
+Route::apiResource('users', 'Api\UserController');
+Route::apiResource('quizzes', 'Api\QuizzController');
+
+/* 
+Inscription
+Login
+quizzes::all()
+Inscription d'un eleve d'une classe
+un eleve peut quitter une classe
+
+enlever des eleves d'une classe
+
+*/

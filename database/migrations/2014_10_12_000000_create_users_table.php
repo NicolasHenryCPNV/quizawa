@@ -21,8 +21,14 @@ class CreateUsersTable extends Migration
             $table->string('pseudo');
             $table->string('firstname');
             $table->string('lastname');
+            $table->boolean('admin');
+            $table->boolean('creator');
             $table->rememberToken();
-            $table->timestamps();
+            $table->bigInteger('classroom_id')->unsigned()->nullable();
+            $table->softDeletes();
+
+            // Foreing keys
+            $table->foreign('classroom_id')->references('id')->on('classrooms');
         });
     }
 
@@ -33,6 +39,10 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        // Drop the foreign keys
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['classroom_id']);
+        });
         Schema::dropIfExists('users');
     }
 }

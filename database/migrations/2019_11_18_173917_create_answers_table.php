@@ -15,7 +15,12 @@ class CreateAnswersTable extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamps();
+            $table->string('value');
+            $table->boolean('correct');
+            $table->bigInteger('question_id')->unsigned()->nullable();
+
+            // Foreing keys
+            $table->foreign('question_id')->references('id')->on('questions');
         });
     }
 
@@ -26,6 +31,10 @@ class CreateAnswersTable extends Migration
      */
     public function down()
     {
+        // Drop the foreign keys
+        Schema::table('answers', function (Blueprint $table) {
+            $table->dropForeign(['question_id']);
+        });
         Schema::dropIfExists('answers');
     }
 }

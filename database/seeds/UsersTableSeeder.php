@@ -18,11 +18,25 @@ class UsersTableSeeder extends Seeder
             'pseudo' => 'Nawakine',
             'firstname' => 'Nicolas',
             'lastname' => 'Henry',
+            'admin' => true,
+            'creator' => false,
+            'classroom_id' => 1,
         ]);
+        User::insert([
+            'email' => 'alexandre.junod@cpnv.ch',
+            'password' => bcrypt('secret'),
+            'pseudo' => 'Alex',
+            'firstname' => 'Alexandre',
+            'lastname' => 'Junod',
+            'admin' => true,
+            'creator' => false,
+            'classroom_id' => 1,
+        ]);
+        
 
-        factory(App\User::class, 30)->create();
-        /* factory(App\User::class, 50)->create()->each(function ($user) {
-            $user->posts()->save(factory(App\Post::class)->make());
-        }); */
+        factory(App\User::class, 29)->create()->each(function ($user) {
+            $user->classroom()->associate(factory(App\Classroom::class)->make());
+        });
+
     }
 }

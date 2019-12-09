@@ -25,5 +25,7 @@ $factory->define(User::class, function (Faker $faker) {
         'pseudo' => $faker->firstName,
         'firstname' => $faker->firstName,
         'lastname' => $faker->lastName,
+        'admin' => $faker->boolean(),
+        'creator' => $faker->boolean(),
     ];
 });

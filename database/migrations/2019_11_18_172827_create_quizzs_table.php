@@ -15,14 +15,15 @@ class CreateQuizzsTable extends Migration
     {
         Schema::create('quizzs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->boolean('private');
+            $table->string('title');
+            $table->string('description');
+            $table->string('image');
+            $table->boolean('active');
 
-            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned()->nullable();
 
             // Foreing keys
             $table->foreign('user_id')->references('id')->on('users');
-            $table->timestamps();
         });
     }
 
