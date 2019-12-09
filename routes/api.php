@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 
 Route::apiResource('users', 'Api\UserController');
 Route::apiResource('quizzes', 'Api\QuizzController');
+Route::apiResource('questions', 'Api\QuestionController');
 
 /* 
 Inscription
