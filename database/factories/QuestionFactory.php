@@ -10,6 +10,6 @@ $factory->define(Question::class, function (Faker $faker) {
     return [
         'question' => $faker->text(10). ' ?',
         'image' => $faker->imageUrl(200, 200, 'cats'),
-        'quizz_id' => Quizz::withTrashed()->get()->random()->id,
+        'quizz_id' => Quizz::all()->random()->id,
     ];
 });
