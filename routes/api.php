@@ -13,10 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::apiResource('users', 'Api\UserController');
-Route::apiResource('quizzes', 'Api\QuizzController');
-Route::apiResource('questions', 'Api\QuestionController');
+Route::apiResource('answers', 'Api\AnswerController');
 Route::apiResource('classrooms', 'Api\ClassroomController');
+Route::apiResource('questions', 'Api\QuestionController');
+Route::apiResource('quizzes', 'Api\QuizzController');
+Route::apiResource('users', 'Api\UserController');
 
 /* 
 Inscription
