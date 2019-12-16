@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
  *)
  */
 
-
 class QuizzController extends Controller
 {
     /**
