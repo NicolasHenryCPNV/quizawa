@@ -24,4 +24,4 @@ Will document the API
 1. `php artisan l5-swagger:generate`
 
 ### Show swagger
-Swagger is our default vue
+Swagger is our default view
