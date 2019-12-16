@@ -5,6 +5,15 @@ namespace App\Http\Controllers;
 use App\Quizz;
 use Illuminate\Http\Request;
 
+/**
+ *@OA\Info(
+ *      description="Listing the routes",
+ *      version="1.0.0",
+ *      title="Quizawa",
+ *)
+ */
+
+
 class QuizzController extends Controller
 {
     /**

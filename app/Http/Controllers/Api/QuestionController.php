@@ -7,8 +7,39 @@ use App\Http\Resources\QuestionCollection;
 use App\Question;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *      name="Questions",
+ *      description="Questions APIs",
+ * )
+ */
+
 class QuestionController extends Controller
 {
+    /**
+     * @OA\GET(
+     *      path="/api/questions",
+     *      tags={"Questions"},
+     *      description="List of questions",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="header",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
     /**
      * Display a listing of the resource.
      *
@@ -39,6 +70,39 @@ class QuestionController extends Controller
     {
         //
     }
+
+    /**
+     * @OA\GET(
+     *      path="/api/questions/{question}",
+     *      tags={"Questions"},
+     *      description="Show one question",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="header",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="path",
+     *          description="ID of the question to return",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Display the specified resource.
