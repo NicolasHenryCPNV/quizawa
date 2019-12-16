@@ -8,8 +8,39 @@ use App\Http\Resources\Quizzs;
 use App\Quizz;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *      name="Quizzes",
+ *      description="Quizzes APIs",
+ * )
+ */
+
 class QuizzController extends Controller
 {
+    /**
+     * @OA\GET(
+     *      path="/api/quizzes",
+     *      tags={"Quizzes"},
+     *      description="List of quizzes",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="header",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
     /**
      * Display a listing of the resource.
      *
@@ -40,6 +71,39 @@ class QuizzController extends Controller
     {
         //
     }
+
+    /**
+     * @OA\GET(
+     *      path="/api/quizzes/{quizz}",
+     *      tags={"Quizzes"},
+     *      description="Show one quizz",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="header",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quizz",
+     *          in="path",
+     *          description="ID of the quizz to return",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Display the specified resource.

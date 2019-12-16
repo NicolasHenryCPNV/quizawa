@@ -7,8 +7,39 @@ use App\Http\Resources\UserCollection;
 use App\User;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *      name="Users",
+ *      description="Users APIs",
+ * )
+ */
+
 class UserController extends Controller
 {
+    /**
+     * @OA\GET(
+     *      path="/api/users",
+     *      tags={"Users"},
+     *      description="List of users",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="header",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
     /**
      * Display a listing of the resource.
      *
@@ -39,6 +70,39 @@ class UserController extends Controller
     {
         //
     }
+
+    /**
+     * @OA\GET(
+     *      path="/api/users/{user}",
+     *      tags={"Users"},
+     *      description="Show one user",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="header",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="user",
+     *          in="path",
+     *          description="ID of the user to return",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Display the specified resource.
