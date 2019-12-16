@@ -13,7 +13,7 @@ class Quizz extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'private', 'user_id',
+        'title', 'description', 'image', 'active', 'user_id'
     ];
 
     public function user()

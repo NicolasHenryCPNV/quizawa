@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\QuizzCollection;
 use App\Http\Resources\Quizzs;
 use App\Quizz;
+use App\User;
 use Illuminate\Http\Request;
 
 /**
@@ -33,7 +34,7 @@ class QuizzController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="successful operation",
+     *          description="OK",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -62,6 +63,70 @@ class QuizzController extends Controller
     }
 
     /**
+     * @OA\POST(
+     *      path="/api/quizzes",
+     *      tags={"Quizzes"},
+     *      description="List of quizzes",
+     *      @OA\Parameter(
+     *          name="token",
+     *          in="header",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="title",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="description",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="image",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="active",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="created",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -69,7 +134,14 @@ class QuizzController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::find($request->user_id);
+
+        $quizz = Quizz::create($request->all());
+
+        $quizz->user()->associate($user);
+        $quizz->save();
+        
+        return response()->json($quizz, 201);
     }
 
     /**
@@ -97,7 +169,7 @@ class QuizzController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="successful operation",
+     *          description="OK",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
