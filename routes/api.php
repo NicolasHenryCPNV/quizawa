@@ -13,13 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::apiResource('classrooms', 'Api\ClassroomController');
+Route::post('users', 'Api\UserController@store')->name('users.store');
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('answers', 'Api\AnswerController');
     Route::apiResource('questions', 'Api\QuestionController');
     Route::apiResource('quizzes', 'Api\QuizzController');
-    Route::apiResource('users', 'Api\UserController');
+    Route::apiResource('users', 'Api\UserController')->except('store');
+    Route::apiResource('classrooms', 'Api\ClassroomController');
 });
 
 /* 
