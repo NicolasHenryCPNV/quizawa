@@ -15,4 +15,9 @@ class Answer extends Model
     protected $fillable = [
         'value', 'is_correct'
     ];
+
+    public function question()
+    {
+        return $this->belongsTo('App\Question');
+    }
 }
