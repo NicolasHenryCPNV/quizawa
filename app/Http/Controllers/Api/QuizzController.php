@@ -208,7 +208,9 @@ class QuizzController extends Controller
      */
     public function update(Request $request, Quizz $quiz)
     {
-        //
+        $quiz->fill($request->all());
+        $quiz->save();
+        return response()->json($quiz, 200);
     }
 
     /**
@@ -219,6 +221,7 @@ class QuizzController extends Controller
      */
     public function destroy(Quizz $quiz)
     {
-        //
+        $quiz->delete();
+        return response()->json("", 204);
     }
 }
