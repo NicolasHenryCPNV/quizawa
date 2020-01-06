@@ -6,6 +6,7 @@ use App\Answer;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AnswerCollection;
 use App\Http\Resources\Answers;
+use App\Question;
 use Illuminate\Http\Request;
 
 class AnswerController extends Controller
@@ -38,7 +39,13 @@ class AnswerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $question = Question::find($request->question_id);
+        $answer = Answer::create($request->all());
+
+        $answer->question()->associate($question);
+        $answer->save();
+        
+        return response()->json($answer, 201);
     }
 
     /**
@@ -72,7 +79,11 @@ class AnswerController extends Controller
      */
     public function update(Request $request, Answer $answer)
     {
-        //
+        $answer->fill($request->all());
+        $answer->question()->associate($request->question_id);
+        $answer->save();
+
+        return response()->json($answer, 200);
     }
 
     /**
@@ -83,6 +94,7 @@ class AnswerController extends Controller
      */
     public function destroy(Answer $answer)
     {
-        //
+        $answer->delete();
+        return response()->json("", 204);
     }
 }
