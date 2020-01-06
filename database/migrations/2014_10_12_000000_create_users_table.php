@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
             $table->boolean('admin');
             $table->boolean('creator');
+            $table->string('api_token', 80)->unique();
             $table->rememberToken();
             $table->bigInteger('classroom_id')->unsigned();
             $table->softDeletes();

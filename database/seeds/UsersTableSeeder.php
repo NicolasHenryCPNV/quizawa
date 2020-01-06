@@ -1,7 +1,7 @@
 <?php
 
-use App\Classroom;
 use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -19,6 +19,7 @@ class UsersTableSeeder extends Seeder
             'pseudo' => 'Nawakine',
             'firstname' => 'Nicolas',
             'lastname' => 'Henry',
+            'api_token' => Str::random(80),
             'admin' => true,
             'creator' => false,
             'classroom_id' => 1,
@@ -29,6 +30,7 @@ class UsersTableSeeder extends Seeder
             'pseudo' => 'Alex',
             'firstname' => 'Alexandre',
             'lastname' => 'Junod',
+            'api_token' => Str::random(80),
             'admin' => true,
             'creator' => false,
             'classroom_id' => 1,

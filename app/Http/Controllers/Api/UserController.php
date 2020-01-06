@@ -22,8 +22,8 @@ class UserController extends Controller
      *      tags={"Users"},
      *      description="List of users",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
@@ -77,8 +77,8 @@ class UserController extends Controller
      *      tags={"Users"},
      *      description="Show one user",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(

@@ -23,8 +23,8 @@ class QuizzController extends Controller
      *      tags={"Quizzes"},
      *      description="List of quizzes",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
@@ -78,8 +78,8 @@ class QuizzController extends Controller
      *      tags={"Quizzes"},
      *      description="Show one quizz",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
