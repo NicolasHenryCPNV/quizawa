@@ -197,6 +197,54 @@
                 }
             }
         },
+        "/api/quizzes/{quiz}/questions": {
+            "get": {
+                "tags": [
+                    "Quizz/questions"
+                ],
+                "description": "List of questions for a quizz",
+                "parameters": [
+                    {
+                        "name": "api_token",
+                        "in": "query",
+                        "description": "User authentication",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "quiz",
+                        "in": "path",
+                        "description": "ID of the quizz to return",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "parameters are missing",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "not found",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -276,6 +324,18 @@
                         "content": {
                             "application/json": {}
                         }
+                    },
+                    "400": {
+                        "description": "parameters are missing",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "403": {
+                        "description": "pseudo or email already exists",
+                        "content": {
+                            "application/json": {}
+                        }
                     }
                 }
             }
@@ -312,6 +372,12 @@
                         "content": {
                             "application/json": {}
                         }
+                    },
+                    "400": {
+                        "description": "parameters are missing",
+                        "content": {
+                            "application/json": {}
+                        }
                     }
                 }
             }
@@ -342,13 +408,19 @@
                 ],
                 "responses": {
                     "201": {
-                        "description": "found",
+                        "description": "found, authentication success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "400": {
+                        "description": "parameters are missing",
                         "content": {
                             "application/json": {}
                         }
                     },
                     "401": {
-                        "description": "not found",
+                        "description": "not found, authentication fail",
                         "content": {
                             "application/json": {}
                         }
@@ -365,6 +437,10 @@
         {
             "name": "Quizzes",
             "description": "Quizzes APIs"
+        },
+        {
+            "name": "Quizz/questions",
+            "description": "Questions of a quizz APIs"
         },
         {
             "name": "Users",
