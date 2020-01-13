@@ -8,8 +8,61 @@ use App\Question;
 use App\Quizz;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *      name="Quizz/questions",
+ *      description="Questions of a quizz APIs",
+ * )
+ */
 class QuizzQuestionController extends Controller
 {
+    /**
+     * @OA\GET(
+     *      path="/api/quizzes/{quiz}/questions",
+     *      tags={"Quizz/questions"},
+     *      description="List of questions for a quizz",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quiz",
+     *          in="path",
+     *          description="ID of the quizz to return",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +70,18 @@ class QuizzQuestionController extends Controller
      */
     public function index(Quizz $quiz)
     {
-        return new QuizzQuestionCollection(Question::all()->where('quizz_id', $quiz->id));
+        // Required parameters
+        if (!$quiz) {
+            return response()->json('Paramètres manquants ou incorrects', 400);
+        }
+        
+        $quizz_collection = new QuizzQuestionCollection(Question::all()->where('quizz_id', $quiz->id));
+
+        if($quizz_collection->count() == 0) {
+            return response()->json('Quizz pas trouvé', 404);
+        }
+
+        return $quizz_collection;
     }
 
     /**

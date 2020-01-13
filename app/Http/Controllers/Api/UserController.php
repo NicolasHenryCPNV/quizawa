@@ -114,6 +114,20 @@ class UserController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="pseudo or email already exists",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
      *      )
      * )
      */
@@ -126,6 +140,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // Required parameters
+        if (!$request->email || !$request->password || !$request->pseudo || !$request->firstname || !$request->lastname) {
+            return response()->json('Paramètres manquants ou incorrects', 400);
+        }
+
+        // User already exists
+        if (User::where('pseudo', $request->pseudo)->first() || User::where('email', $request->email)->first()) {
+            return response()->json("Pseudo ou email déjà existant", 403);
+        }
+
         $user = User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password),
@@ -137,6 +161,9 @@ class UserController extends Controller
             'api_token' => Str::random(80),
             'classroom_id' => env('CLASSROOM_GUEST'),
         ]);
+
+        echo $user;
+        die();
 
         return response()->json($user->api_token, 201);
     }
@@ -167,6 +194,13 @@ class UserController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -242,14 +276,21 @@ class UserController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="found",
+     *          description="found, authentication success",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
      *      ),
      *      @OA\Response(
      *          response=401,
-     *          description="not found",
+     *          description="not found, authentication fail",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -265,8 +306,13 @@ class UserController extends Controller
      */
     public function login(Request $request)
     {
+        // Required parameters
+        if (!$request->pseudo || !$request->password) {
+            return response()->json('Paramètres manquants ou incorrects', 400);
+        }
+
         $user = User::where('pseudo', $request->pseudo)->first();
-        if (Hash::check($request->password, $user->password)) {
+        if ($user && Hash::check($request->password, $user->password)) {
             return response()->json($user->api_token, 201);
         } else {
             return response()->json('Vos identifiants ne sont pas corrects', 401);
