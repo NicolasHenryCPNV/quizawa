@@ -155,7 +155,6 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        /* later */
         $question->delete();
         return response()->json("", 204);
     }
