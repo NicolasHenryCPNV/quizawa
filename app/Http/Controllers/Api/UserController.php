@@ -162,9 +162,6 @@ class UserController extends Controller
             'classroom_id' => env('CLASSROOM_GUEST'),
         ]);
 
-        echo $user;
-        die();
-
         return response()->json($user->api_token, 201);
     }
 
