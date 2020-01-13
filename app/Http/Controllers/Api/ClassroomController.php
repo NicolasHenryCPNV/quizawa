@@ -38,7 +38,11 @@ class ClassroomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $classroom = Classroom::create($request->all());
+
+        $classroom->save();
+        
+        return response()->json($classroom, 201);
     }
 
     /**
@@ -72,7 +76,11 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
-        //
+        $classroom->fill($request->all());
+        
+        $classroom->save();
+
+        return response()->json($classroom, 200);
     }
 
     /**
@@ -83,6 +91,7 @@ class ClassroomController extends Controller
      */
     public function destroy(Classroom $classroom)
     {
-        //
+        $classroom->delete();
+        return response()->json("", 204);
     }
 }
