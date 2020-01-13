@@ -14,8 +14,8 @@
                 "description": "List of questions",
                 "parameters": [
                     {
-                        "name": "token",
-                        "in": "header",
+                        "name": "api_token",
+                        "in": "query",
                         "description": "User authentication",
                         "required": true,
                         "schema": {
@@ -41,8 +41,8 @@
                 "description": "Show one question",
                 "parameters": [
                     {
-                        "name": "token",
-                        "in": "header",
+                        "name": "api_token",
+                        "in": "query",
                         "description": "User authentication",
                         "required": true,
                         "schema": {
@@ -77,8 +77,8 @@
                 "description": "List of quizzes",
                 "parameters": [
                     {
-                        "name": "token",
-                        "in": "header",
+                        "name": "api_token",
+                        "in": "query",
                         "description": "User authentication",
                         "required": true,
                         "schema": {
@@ -169,8 +169,8 @@
                 "description": "Show one quizz",
                 "parameters": [
                     {
-                        "name": "token",
-                        "in": "header",
+                        "name": "api_token",
+                        "in": "query",
                         "description": "User authentication",
                         "required": true,
                         "schema": {
@@ -205,8 +205,8 @@
                 "description": "List of users",
                 "parameters": [
                     {
-                        "name": "token",
-                        "in": "header",
+                        "name": "api_token",
+                        "in": "query",
                         "description": "User authentication",
                         "required": true,
                         "schema": {
@@ -222,6 +222,62 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Store an user",
+                "parameters": [
+                    {
+                        "name": "pseudo",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "firstname",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lastname",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "email"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "stored",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
             }
         },
         "/api/users/{user}": {
@@ -232,8 +288,8 @@
                 "description": "Show one user",
                 "parameters": [
                     {
-                        "name": "token",
-                        "in": "header",
+                        "name": "api_token",
+                        "in": "query",
                         "description": "User authentication",
                         "required": true,
                         "schema": {

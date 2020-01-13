@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Classroom;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserCollection;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * @OA\Tag(
@@ -22,8 +24,8 @@ class UserController extends Controller
      *      tags={"Users"},
      *      description="List of users",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
@@ -61,6 +63,61 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\POST(
+     *      path="/api/users",
+     *      tags={"Users"},
+     *      description="Store an user",
+     *      @OA\Parameter(
+     *          name="pseudo",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="firstname",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="lastname",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="email"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="stored",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -68,7 +125,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = User::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'pseudo' => $request->pseudo,
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'admin' => 0,
+            'creator' => 0,
+            'api_token' => Str::random(80),
+            'classroom_id' => env('CLASSROOM_GUEST'),
+        ]);
+
+        return response()->json($user->api_token, 201);
     }
 
     /**
@@ -77,8 +146,8 @@ class UserController extends Controller
      *      tags={"Users"},
      *      description="Show one user",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(

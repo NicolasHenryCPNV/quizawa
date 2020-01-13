@@ -22,8 +22,8 @@ class QuestionController extends Controller
      *      tags={"Questions"},
      *      description="List of questions",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
@@ -77,8 +77,8 @@ class QuestionController extends Controller
      *      tags={"Questions"},
      *      description="Show one question",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(

@@ -14,12 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('answers', 'Api\AnswerController');
-Route::apiResource('classrooms', 'Api\ClassroomController');
-Route::apiResource('questions', 'Api\QuestionController');
-Route::apiResource('quizzes', 'Api\QuizzController');
-Route::get('quizzes/{quiz}/questions', 'Api\QuizzQuestionController@index')->name('quizzes.questions.index');
-Route::apiResource('users', 'Api\UserController');
+Route::post('users', 'Api\UserController@store')->name('users.store');
+
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::apiResource('answers', 'Api\AnswerController');
+    Route::apiResource('questions', 'Api\QuestionController');
+    Route::apiResource('quizzes', 'Api\QuizzController');
+    Route::apiResource('users', 'Api\UserController')->except('store');
+    Route::apiResource('classrooms', 'Api\ClassroomController');
+});
 
 /* 
 Inscription
