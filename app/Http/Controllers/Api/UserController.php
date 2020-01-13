@@ -239,6 +239,20 @@ class UserController extends Controller
      *          @OA\Schema(
      *              type="string"
      *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
      *      )
      * )
      */
