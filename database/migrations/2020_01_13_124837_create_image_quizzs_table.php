@@ -16,9 +16,10 @@ class CreateImageQuizzsTable extends Migration
         Schema::create('image_quizzs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('url');
+            // Column for the foreign key
             $table->bigInteger('quizz_id')->unsigned();
 
-            // Foreing keys
+            // Foreing keys link
             $table->foreign('quizz_id')->references('id')->on('quizzs')->onDelete('cascade');
         });
     }
@@ -30,6 +31,7 @@ class CreateImageQuizzsTable extends Migration
      */
     public function down()
     {
+        // If you rollback, we drop the table
         Schema::dropIfExists('image_quizzs');
     }
 }
