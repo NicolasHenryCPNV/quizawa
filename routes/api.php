@@ -22,4 +22,5 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('quizzes', 'Api\QuizzController');
     Route::apiResource('users', 'Api\UserController')->except('store');
     Route::apiResource('classrooms', 'Api\ClassroomController');
+    Route::get('quizzes/{quiz}/questions', 'Api\QuizzQuestionController@index')->name('quizzes.questions.index');
 });
