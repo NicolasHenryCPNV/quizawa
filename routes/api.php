@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('users', 'Api\UserController@store')->name('users.store');
+Route::post('users/login', 'Api\UserController@login')->name('users.login');
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('answers', 'Api\AnswerController');

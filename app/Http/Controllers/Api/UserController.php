@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserCollection;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -216,5 +217,45 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * @OA\POST(
+     *      path="/api/users/login",
+     *      tags={"Users"},
+     *      description="Login with the user account",
+     *      @OA\Parameter(
+     *          name="pseudo",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      )
+     * )
+     */
+
+    /**
+     * Find an user in the database and check credentials.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $user = User::where('pseudo', $request->pseudo)->first();
+        if (Hash::check($request->password, $user->password)) {
+            return response()->json($user->api_token, 201);
+        } else {
+            return response()->json('Vos identifiants ne sont pas corrects', 401);
+        }
     }
 }
