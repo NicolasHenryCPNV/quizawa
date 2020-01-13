@@ -23,14 +23,3 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('users', 'Api\UserController')->except('store');
     Route::apiResource('classrooms', 'Api\ClassroomController');
 });
-
-/* 
-Inscription
-Login
-quizzes::all()
-Inscription d'un eleve d'une classe
-un eleve peut quitter une classe
-
-enlever des eleves d'une classe
-
-*/

@@ -96,7 +96,7 @@ class UserController extends Controller
      *          in="query",
      *          required=true,
      *          @OA\Schema(
-     *              type="email"
+     *              type="string"
      *          )
      *      ),
      *      @OA\Parameter(
