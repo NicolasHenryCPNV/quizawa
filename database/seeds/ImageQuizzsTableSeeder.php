@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class QuizzsTableSeeder extends Seeder
+class ImageQuizzsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class QuizzsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Quizz::class, 31)->create();
+        factory(App\ImageQuizz::class, 30)->create();
     }
 }

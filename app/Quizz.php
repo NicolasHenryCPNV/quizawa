@@ -24,4 +24,8 @@ class Quizz extends Model
     public function questions() {
         return $this->hasMany('App\Question');
     }
+
+    public function imageQuizzs() {
+        return $this->hasMany('App\ImageQuizz');
+    }
 }
