@@ -258,7 +258,7 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "email"
+                            "type": "string"
                         }
                     },
                     {
