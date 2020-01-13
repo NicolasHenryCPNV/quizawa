@@ -19,7 +19,7 @@ class CreateImageQuizzsTable extends Migration
             $table->bigInteger('quizz_id')->unsigned();
 
             // Foreing keys
-            $table->foreign('quizz_id')->references('id')->on('quizzs');
+            $table->foreign('quizz_id')->references('id')->on('quizzs')->onDelete('cascade');
         });
     }
 
