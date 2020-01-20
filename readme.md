@@ -15,12 +15,13 @@
 6. Go to your project folder `cd` command and run `php artisan migrate:refresh --seed`
 
 ## Swagger
+Will document the API
 
 ### Edit API doc
-1. Change content in the controllers
+1. The documentation is managed in the controllers
 
-### Generate swagger 
+### Update swagger vue
 1. `php artisan l5-swagger:generate`
 
 ### Show swagger
-1. Endpoint + `/api/documentation`
+Swagger is our default view
