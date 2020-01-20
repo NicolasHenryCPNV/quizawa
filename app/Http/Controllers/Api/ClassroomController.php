@@ -8,8 +8,38 @@ use App\Http\Resources\ClassroomCollection;
 use App\Http\Resources\Classrooms;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *      name="Classrooms",
+ *      description="Classrooms APIs",
+ * )
+ */
 class ClassroomController extends Controller
 {
+    /**
+     * @OA\GET(
+     *      path="/api/classrooms",
+     *      tags={"Classrooms"},
+     *      description="List of classrooms",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
     /**
      * Display a listing of the resource.
      *
@@ -31,6 +61,46 @@ class ClassroomController extends Controller
     }
 
     /**
+     * @OA\POST(
+     *      path="/api/classrooms",
+     *      tags={"Classrooms"},
+     *      description="Store a classroom",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="name",
+     *          in="query",
+     *          description="name of classroom",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="stored",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -44,6 +114,46 @@ class ClassroomController extends Controller
         
         return response()->json($classroom, 201);
     }
+
+    /**
+     * @OA\GET(
+     *      path="/api/classrooms/{classroom}",
+     *      tags={"Classrooms"},
+     *      description="Show one classroom",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="classroom",
+     *          in="path",
+     *          description="ID of the classroom to return",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Display the specified resource.
@@ -68,6 +178,62 @@ class ClassroomController extends Controller
     }
 
     /**
+     * @OA\PATCH(
+     *      path="/api/classrooms/{classroom}",
+     *      tags={"Classrooms"},
+     *      description="Update one classroom",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="name",
+     *          in="query",
+     *          description="name of classroom",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="classroom",
+     *          in="path",
+     *          description="ID of the classroom to update",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -82,6 +248,53 @@ class ClassroomController extends Controller
 
         return response()->json($classroom, 200);
     }
+
+    /**
+     * @OA\DELETE(
+     *      path="/api/classrooms/{classroom}",
+     *      tags={"Classrooms"},
+     *      description="delete one classroom",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="classroom",
+     *          in="path",
+     *          description="ID of the classroom to delete",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Remove the specified resource from storage.
