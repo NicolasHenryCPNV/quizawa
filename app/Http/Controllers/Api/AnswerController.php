@@ -202,7 +202,7 @@ class AnswerController extends Controller
      * @OA\PATCH(
      *      path="/api/answers/{answer}",
      *      tags={"Answers"},
-     *      description="List of questions for a answer",
+     *      description="Update one answer",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
