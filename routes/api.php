@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,16 +14,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::apiResource('users', 'Api\UserController');
-Route::apiResource('quizzes', 'Api\QuizzController');
+Route::post('users', 'Api\UserController@store')->name('users.store');
+Route::post('users/login', 'Api\UserController@login')->name('users.login');
 
-/* 
-Inscription
-Login
-quizzes::all()
-Inscription d'un eleve d'une classe
-un eleve peut quitter une classe
-
-enlever des eleves d'une classe
-
-*/
+Route::group(['middleware' => ['auth:api']], function () {
+    Route::apiResource('answers', 'Api\AnswerController');
+    Route::apiResource('questions', 'Api\QuestionController');
+    Route::apiResource('quizzes', 'Api\QuizzController');
+    Route::apiResource('users', 'Api\UserController')->except('store');
+    Route::apiResource('classrooms', 'Api\ClassroomController');
+    Route::get('quizzes/{quiz}/questions', 'Api\QuizzQuestionController@index')->name('quizzes.questions.index');
+});

@@ -3,11 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Quizz extends Model
 {
-    use SoftDeletes;
     public $timestamps = false;
     /**
      * The attributes that are mass assignable.
@@ -15,7 +13,7 @@ class Quizz extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'private', 'user_id',
+        'title', 'description', 'image', 'active', 'user_id'
     ];
 
     public function user()
@@ -25,5 +23,9 @@ class Quizz extends Model
 
     public function questions() {
         return $this->hasMany('App\Question');
+    }
+
+    public function imageQuizzs() {
+        return $this->hasMany('App\ImageQuizz');
     }
 }

@@ -4,26 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Classroom;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserCollection;
-use App\User;
+use App\Http\Resources\ClassroomCollection;
+use App\Http\Resources\Classrooms;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @OA\Tag(
- *      name="Users",
- *      description="Users APIs",
+ *      name="Classrooms",
+ *      description="Classrooms APIs",
  * )
  */
-
-class UserController extends Controller
+class ClassroomController extends Controller
 {
     /**
      * @OA\GET(
-     *      path="/api/users",
-     *      tags={"Users"},
-     *      description="List of users",
+     *      path="/api/classrooms",
+     *      tags={"Classrooms"},
+     *      description="List of classrooms",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -50,7 +47,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return new UserCollection(User::all());
+        return new ClassroomCollection(Classroom::all());
     }
 
     /**
@@ -65,44 +62,22 @@ class UserController extends Controller
 
     /**
      * @OA\POST(
-     *      path="/api/users",
-     *      tags={"Users"},
-     *      description="Store an user",
+     *      path="/api/classrooms",
+     *      tags={"Classrooms"},
+     *      description="Store a classroom",
      *      @OA\Parameter(
-     *          name="pseudo",
+     *          name="api_token",
      *          in="query",
+     *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="firstname",
+     *          name="name",
      *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="lastname",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
-     *          in="query",
+     *          description="name of classroom",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
@@ -121,13 +96,6 @@ class UserController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="pseudo or email already exists",
-     *          @OA\MediaType(
-     *              mediaType="application/json",
-     *          )
      *      )
      * )
      */
@@ -140,36 +108,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Required parameters
-        if (!$request->email || !$request->password || !$request->pseudo || !$request->firstname || !$request->lastname) {
-            return response()->json('Paramètres manquants ou incorrects', 400);
-        }
+        $classroom = Classroom::create($request->all());
 
-        // User already exists
-        if (User::where('pseudo', $request->pseudo)->first() || User::where('email', $request->email)->first()) {
-            return response()->json("Pseudo ou email déjà existant", 403);
-        }
-
-        $user = User::create([
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'pseudo' => $request->pseudo,
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'admin' => 0,
-            'creator' => 0,
-            'api_token' => Str::random(80),
-            'classroom_id' => env('CLASSROOM_GUEST'),
-        ]);
-
-        return response()->json($user->api_token, 201);
+        $classroom->save();
+        
+        return response()->json($classroom, 201);
     }
 
     /**
      * @OA\GET(
-     *      path="/api/users/{user}",
-     *      tags={"Users"},
-     *      description="Show one user",
+     *      path="/api/classrooms/{classroom}",
+     *      tags={"Classrooms"},
+     *      description="Show one classroom",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -180,9 +130,9 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="user",
+     *          name="classroom",
      *          in="path",
-     *          description="ID of the user to return",
+     *          description="ID of the classroom to return",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -208,72 +158,60 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Classroom  $classroom
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Classroom $classroom)
     {
-        //
+        return new Classrooms($classroom);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Classroom  $classroom
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Classroom $classroom)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
-     * @OA\POST(
-     *      path="/api/users/login",
-     *      tags={"Users"},
-     *      description="Login with the user account",
+     * @OA\PATCH(
+     *      path="/api/classrooms/{classroom}",
+     *      tags={"Classrooms"},
+     *      description="Update one classroom",
      *      @OA\Parameter(
-     *          name="pseudo",
+     *          name="api_token",
      *          in="query",
+     *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="password",
+     *          name="name",
      *          in="query",
+     *          description="name of classroom",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="classroom",
+     *          in="path",
+     *          description="ID of the classroom to update",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
      *          )
      *      ),
      *      @OA\Response(
-     *          response=201,
-     *          description="found, authentication success",
+     *          response=200,
+     *          description="successful operation",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -286,8 +224,8 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=401,
-     *          description="not found, authentication fail",
+     *          response=404,
+     *          description="not found",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -296,23 +234,77 @@ class UserController extends Controller
      */
 
     /**
-     * Find an user in the database and check credentials.
+     * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Classroom  $classroom
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request)
+    public function update(Request $request, Classroom $classroom)
     {
-        // Required parameters
-        if (!$request->pseudo || !$request->password) {
-            return response()->json('Paramètres manquants ou incorrects', 400);
-        }
+        $classroom->fill($request->all());
+        
+        $classroom->save();
 
-        $user = User::where('pseudo', $request->pseudo)->first();
-        if ($user && Hash::check($request->password, $user->password)) {
-            return response()->json($user->api_token, 201);
-        } else {
-            return response()->json('Vos identifiants ne sont pas corrects', 401);
-        }
+        return response()->json($classroom, 200);
+    }
+
+    /**
+     * @OA\DELETE(
+     *      path="/api/classrooms/{classroom}",
+     *      tags={"Classrooms"},
+     *      description="delete one classroom",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="classroom",
+     *          in="path",
+     *          description="ID of the classroom to delete",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Classroom  $classroom
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Classroom $classroom)
+    {
+        $classroom->delete();
+        return response()->json("", 204);
     }
 }

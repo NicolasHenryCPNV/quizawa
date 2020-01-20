@@ -20,7 +20,7 @@ class CreateAnswersTable extends Migration
             $table->bigInteger('question_id')->unsigned()->nullable();
 
             // Foreing keys
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
         });
     }
 

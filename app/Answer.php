@@ -13,6 +13,11 @@ class Answer extends Model
      * @var array
      */
     protected $fillable = [
-        'value', 'is_correct'
+        'value', 'correct'
     ];
+
+    public function question()
+    {
+        return $this->belongsTo('App\Question');
+    }
 }

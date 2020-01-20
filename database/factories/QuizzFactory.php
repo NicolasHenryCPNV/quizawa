@@ -11,7 +11,7 @@ $factory->define(Quizz::class, function (Faker $faker) {
     return [
         'title' => $faker->userName,
         'description' => $faker->boolean(),
-        'image' => Classroom::all()->random()->id,
+        'image' => $faker->imageUrl(200, 200, 'cats'),
         'active' => Classroom::all()->random()->id,
         'user_id' => User::all()->random()->id,
     ];

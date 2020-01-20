@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuestionsTable extends Migration
+class CreateImageQuizzsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('image_quizzs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('question');
-            $table->string('image');
+            $table->string('url');
+            // Column for the foreign key
             $table->bigInteger('quizz_id')->unsigned();
 
-            // Foreing keys
+            // Foreing keys link
             $table->foreign('quizz_id')->references('id')->on('quizzs')->onDelete('cascade');
         });
     }
@@ -31,10 +31,7 @@ class CreateQuestionsTable extends Migration
      */
     public function down()
     {
-        // Drop the foreign keys
-        Schema::table('questions', function (Blueprint $table) {
-            $table->dropForeign(['quizz_id']);
-        });
-        Schema::dropIfExists('questions');
+        // If you rollback, we drop the table
+        Schema::dropIfExists('image_quizzs');
     }
 }

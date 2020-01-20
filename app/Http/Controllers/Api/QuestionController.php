@@ -2,28 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Classroom;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserCollection;
-use App\User;
+use App\Http\Resources\QuestionCollection;
+use App\Http\Resources\Questions;
+use App\Question;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @OA\Tag(
- *      name="Users",
- *      description="Users APIs",
+ *      name="Questions",
+ *      description="Questions APIs",
  * )
  */
 
-class UserController extends Controller
+class QuestionController extends Controller
 {
     /**
      * @OA\GET(
-     *      path="/api/users",
-     *      tags={"Users"},
-     *      description="List of users",
+     *      path="/api/questions",
+     *      tags={"Questions"},
+     *      description="List of questions",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -50,7 +48,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return new UserCollection(User::all());
+        return new QuestionCollection(Question::all());
     }
 
     /**
@@ -65,11 +63,20 @@ class UserController extends Controller
 
     /**
      * @OA\POST(
-     *      path="/api/users",
-     *      tags={"Users"},
-     *      description="Store an user",
+     *      path="/api/questions",
+     *      tags={"Questions"},
+     *      description="Store a question",
      *      @OA\Parameter(
-     *          name="pseudo",
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
      *          in="query",
      *          required=true,
      *          @OA\Schema(
@@ -77,7 +84,7 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="firstname",
+     *          name="image",
      *          in="query",
      *          required=true,
      *          @OA\Schema(
@@ -85,23 +92,7 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="lastname",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="email",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="password",
+     *          name="quizz_id",
      *          in="query",
      *          required=true,
      *          @OA\Schema(
@@ -140,36 +131,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Required parameters
-        if (!$request->email || !$request->password || !$request->pseudo || !$request->firstname || !$request->lastname) {
-            return response()->json('Paramètres manquants ou incorrects', 400);
-        }
+        $question = Question::create($request->all());
 
-        // User already exists
-        if (User::where('pseudo', $request->pseudo)->first() || User::where('email', $request->email)->first()) {
-            return response()->json("Pseudo ou email déjà existant", 403);
-        }
-
-        $user = User::create([
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'pseudo' => $request->pseudo,
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'admin' => 0,
-            'creator' => 0,
-            'api_token' => Str::random(80),
-            'classroom_id' => env('CLASSROOM_GUEST'),
-        ]);
-
-        return response()->json($user->api_token, 201);
+        $question->save();
+        
+        return response()->json($question, 201);
     }
 
     /**
      * @OA\GET(
-     *      path="/api/users/{user}",
-     *      tags={"Users"},
-     *      description="Show one user",
+     *      path="/api/questions/{question}",
+     *      tags={"Questions"},
+     *      description="Show one question",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -180,9 +153,9 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="user",
+     *          name="question",
      *          in="path",
-     *          description="ID of the user to return",
+     *          description="ID of the question to return",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -201,6 +174,13 @@ class UserController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
      *      )
      * )
      */
@@ -208,55 +188,57 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Question $question)
     {
-        //
+        return new Questions($question);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Question $question)
     {
         //
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
-     * @OA\POST(
-     *      path="/api/users/login",
-     *      tags={"Users"},
-     *      description="Login with the user account",
+     * @OA\PATCH(
+     *      path="/api/questions/{question}",
+     *      tags={"Questions"},
+     *      description="Store a question",
      *      @OA\Parameter(
-     *          name="pseudo",
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ), 
+     *      @OA\Parameter(
+     *          name="image",
      *          in="query",
      *          required=true,
      *          @OA\Schema(
@@ -264,16 +246,16 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="password",
+     *          name="quizz_id",
      *          in="query",
      *          required=true,
      *          @OA\Schema(
-     *              type="string"
+     *              type="integer"
      *          )
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="found, authentication success",
+     *          description="stored",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -286,8 +268,8 @@ class UserController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=401,
-     *          description="not found, authentication fail",
+     *          response=403,
+     *          description="pseudo or email already exists",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -296,23 +278,77 @@ class UserController extends Controller
      */
 
     /**
-     * Find an user in the database and check credentials.
+     * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function login(Request $request)
+    public function update(Request $request, Question $question)
     {
-        // Required parameters
-        if (!$request->pseudo || !$request->password) {
-            return response()->json('Paramètres manquants ou incorrects', 400);
-        }
+        $question->fill($request->all());
+        
+        $question->save();
 
-        $user = User::where('pseudo', $request->pseudo)->first();
-        if ($user && Hash::check($request->password, $user->password)) {
-            return response()->json($user->api_token, 201);
-        } else {
-            return response()->json('Vos identifiants ne sont pas corrects', 401);
-        }
+        return response()->json($question, 200);
+    }
+
+    /**
+     * @OA\DELETE(
+     *      path="/api/questions/{question}",
+     *      tags={"Questions"},
+     *      description="Show one question",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="path",
+     *          description="ID of the question to delete",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Question  $question
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Question $question)
+    {
+        $question->delete();
+        return response()->json("", 204);
     }
 }

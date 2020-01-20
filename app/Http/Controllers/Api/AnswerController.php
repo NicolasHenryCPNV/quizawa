@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Answer;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\QuizzCollection;
-use App\Http\Resources\Quizzs;
-use App\Quizz;
-use App\User;
+use App\Http\Resources\AnswerCollection;
+use App\Http\Resources\Answers;
+use App\Question;
 use Illuminate\Http\Request;
 
 /**
  * @OA\Tag(
- *      name="Quizzes",
- *      description="Quizzes APIs",
+ *      name="Answers",
+ *      description="Answers APIs",
  * )
  */
-
-class QuizzController extends Controller
+class AnswerController extends Controller
 {
     /**
      * @OA\GET(
-     *      path="/api/quizzes",
-     *      tags={"Quizzes"},
-     *      description="List of quizzes",
+     *      path="/api/answers",
+     *      tags={"Answers"},
+     *      description="List of answers",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -34,7 +33,7 @@ class QuizzController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="OK",
+     *          description="successful operation",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -49,7 +48,7 @@ class QuizzController extends Controller
      */
     public function index()
     {
-        return new QuizzCollection(Quizz::all());
+        return new AnswerCollection(Answer::all());
     }
 
     /**
@@ -64,12 +63,12 @@ class QuizzController extends Controller
 
     /**
      * @OA\POST(
-     *      path="/api/quizzes",
-     *      tags={"Quizzes"},
-     *      description="List of quizzes",
+     *      path="/api/answers",
+     *      tags={"Answers"},
+     *      description="Store an answer",
      *      @OA\Parameter(
-     *          name="token",
-     *          in="header",
+     *          name="api_token",
+     *          in="query",
      *          description="User authentication",
      *          required=true,
      *          @OA\Schema(
@@ -77,40 +76,27 @@ class QuizzController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="title",
+     *          name="value",
      *          in="query",
+     *          description="Value of answer",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="description",
+     *          name="correct",
      *          in="query",
+     *          description="if he's correct",
      *          required=true,
      *          @OA\Schema(
      *              type="string"
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="image",
+     *          name="question_id",
      *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="active",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="user_id",
-     *          in="query",
+     *          description="id of the question",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -118,7 +104,14 @@ class QuizzController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="created",
+     *          description="stored",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -134,21 +127,20 @@ class QuizzController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::find($request->user_id);
+        $question = Question::find($request->question_id);
+        $answer = Answer::create($request->all());
 
-        $quizz = Quizz::create($request->all());
-
-        $quizz->user()->associate($user);
-        $quizz->save();
+        $answer->question()->associate($question);
+        $answer->save();
         
-        return response()->json($quizz, 201);
+        return response()->json($answer, 201);
     }
 
     /**
      * @OA\GET(
-     *      path="/api/quizzes/{quizz}",
-     *      tags={"Quizzes"},
-     *      description="Show one quizz",
+     *      path="/api/answers/{answer}",
+     *      tags={"Answers"},
+     *      description="Show one answer",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -159,9 +151,9 @@ class QuizzController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="quizz",
+     *          name="answer",
      *          in="path",
-     *          description="ID of the quizz to return",
+     *          description="ID of the answer to return",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -169,7 +161,14 @@ class QuizzController extends Controller
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="OK",
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
@@ -180,30 +179,30 @@ class QuizzController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Quizz $quiz
+     * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function show(Quizz $quiz)
+    public function show(Answer $answer)
     {
-        return new Quizzs($quiz);
+        return new Answers($answer);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Quizz $quiz
+     * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Quizz $quiz)
+    public function edit(Answer $answer)
     {
         //
     }
 
     /**
      * @OA\PATCH(
-     *      path="/api/quizzes/{quiz}",
-     *      tags={"Quizzes"},
-     *      description="List of questions for a quizz",
+     *      path="/api/answers/{answer}",
+     *      tags={"Answers"},
+     *      description="Update one answer",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -214,54 +213,36 @@ class QuizzController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="quiz",
+     *          name="value",
+     *          in="query",
+     *          description="Value of answer",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="correct",
+     *          in="query",
+     *          description="if he's correct",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question_id",
+     *          in="query",
+     *          description="id of the question",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="answer",
      *          in="path",
-     *          description="ID of the quizz to update",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="title",
-     *          in="query",
-     *          description="Title of the quizz",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="description",
-     *          in="query",
-     *          description="Description of the quizz",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="image",
-     *          in="query",
-     *          description="Url of the image",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="active",
-     *          in="query",
-     *          description="Status of the quizz",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="integer"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="user_id",
-     *          in="query",
-     *          description="Owner of the quizz",
+     *          description="ID of the answer to update",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -295,21 +276,23 @@ class QuizzController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Quizz $quiz
+     * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Quizz $quiz)
+    public function update(Request $request, Answer $answer)
     {
-        $quiz->fill($request->all());
-        $quiz->save();
-        return response()->json($quiz, 200);
+        $answer->fill($request->all());
+        $answer->question()->associate($request->question_id);
+        $answer->save();
+
+        return response()->json($answer, 200);
     }
 
     /**
      * @OA\DELETE(
-     *      path="/api/quizzes/{quiz}",
-     *      tags={"Quizzes"},
-     *      description="List of questions for a quizz",
+     *      path="/api/answers/{answer}",
+     *      tags={"Answers"},
+     *      description="delete one answer",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -320,9 +303,9 @@ class QuizzController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="quiz",
+     *          name="answer",
      *          in="path",
-     *          description="ID of the quizz to delete",
+     *          description="ID of the answer to delete",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
@@ -355,12 +338,12 @@ class QuizzController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Quizz $quiz
+     * @param  \App\Answer  $answer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Quizz $quiz)
+    public function destroy(Answer $answer)
     {
-        $quiz->delete();
+        $answer->delete();
         return response()->json("", 204);
     }
 }
