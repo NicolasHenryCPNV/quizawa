@@ -62,6 +62,68 @@ class QuestionController extends Controller
     }
 
     /**
+     * @OA\POST(
+     *      path="/api/questions",
+     *      tags={"Questions"},
+     *      description="Store a question",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="image",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quizz_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="stored",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="pseudo or email already exists",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -105,6 +167,20 @@ class QuestionController extends Controller
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
      *      )
      * )
      */
@@ -132,6 +208,76 @@ class QuestionController extends Controller
     }
 
     /**
+     * @OA\PATCH(
+     *      path="/api/questions/{question}",
+     *      tags={"Questions"},
+     *      description="Store a question",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="path",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ), 
+     *      @OA\Parameter(
+     *          name="image",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quizz_id",
+     *          in="query",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="stored",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="pseudo or email already exists",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -146,6 +292,53 @@ class QuestionController extends Controller
 
         return response()->json($question, 200);
     }
+
+    /**
+     * @OA\DELETE(
+     *      path="/api/questions/{question}",
+     *      tags={"Questions"},
+     *      description="Show one question",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="question",
+     *          in="path",
+     *          description="ID of the question to delete",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Remove the specified resource from storage.

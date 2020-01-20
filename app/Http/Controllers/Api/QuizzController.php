@@ -200,6 +200,98 @@ class QuizzController extends Controller
     }
 
     /**
+     * @OA\PATCH(
+     *      path="/api/quizzes/{quiz}",
+     *      tags={"Quizzes"},
+     *      description="List of questions for a quizz",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quiz",
+     *          in="path",
+     *          description="ID of the quizz to update",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="title",
+     *          in="query",
+     *          description="Title of the quizz",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="description",
+     *          in="query",
+     *          description="Description of the quizz",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="image",
+     *          in="query",
+     *          description="Url of the image",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="active",
+     *          in="query",
+     *          description="Status of the quizz",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="user_id",
+     *          in="query",
+     *          description="Owner of the quizz",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -212,6 +304,53 @@ class QuizzController extends Controller
         $quiz->save();
         return response()->json($quiz, 200);
     }
+
+    /**
+     * @OA\DELETE(
+     *      path="/api/quizzes/{quiz}",
+     *      tags={"Quizzes"},
+     *      description="List of questions for a quizz",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="quiz",
+     *          in="path",
+     *          description="ID of the quizz to delete",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Remove the specified resource from storage.
