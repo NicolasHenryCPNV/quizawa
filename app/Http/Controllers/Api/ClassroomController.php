@@ -192,21 +192,21 @@ class ClassroomController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="name",
-     *          in="query",
-     *          description="name of classroom",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
      *          name="classroom",
      *          in="path",
      *          description="ID of the classroom to update",
      *          required=true,
      *          @OA\Schema(
      *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="name",
+     *          in="query",
+     *          description="name of classroom",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
      *          )
      *      ),
      *      @OA\Response(
@@ -273,8 +273,8 @@ class ClassroomController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=200,
-     *          description="successful operation",
+     *          response=204,
+     *          description="successful without content",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )

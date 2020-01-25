@@ -15,14 +15,14 @@ class CreateQuizzSessionTable extends Migration
     {
         Schema::create('quizz_session', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('started_at');
-            $table->timestamp('ended_at');
+            $table->timestamp('started_at')->nullable();
+            $table->timestamp('ended_at')->nullable();
             $table->bigInteger('classroom_id')->unsigned();
             $table->bigInteger('quizz_id')->unsigned();
 
             // Foreing keys
-            $table->foreign('classroom_id')->references('id')->on('classrooms');
-            $table->foreign('quizz_id')->references('id')->on('quizzs');
+            $table->foreign('classroom_id')->references('id')->on('classrooms')->onDelete('cascade');
+            $table->foreign('quizz_id')->references('id')->on('quizzs')->onDelete('cascade');
         });
     }
 

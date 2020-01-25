@@ -50,7 +50,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return new UserCollection(User::all());
+        return new UserCollection(User::orderBy('lastname')->get());
     }
 
     /**
@@ -162,7 +162,7 @@ class UserController extends Controller
             'classroom_id' => env('CLASSROOM_GUEST'),
         ]);
 
-        return response()->json($user->api_token, 201);
+        return response()->json($user, 201);
     }
 
     /**
@@ -228,16 +228,202 @@ class UserController extends Controller
     }
 
     /**
+     * @OA\PATCH(
+     *      path="/api/users/{user}",
+     *      tags={"Users"},
+     *      description="Update an user by himself or assign a class by admin and creator",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="user",
+     *          in="path",
+     *          description="ID of the user to update",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          in="query",
+     *          description="Email of the user",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          in="query",
+     *          description="Password of the user",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="pseudo",
+     *          in="query",
+     *          description="Pseudo of the user",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="firstname",
+     *          in="query",
+     *          description="First name of the user",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="lastname",
+     *          in="query",
+     *          description="Last name of the user",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="admin",
+     *          in="query",
+     *          description="Boolean to define if he's an admin",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="creator",
+     *          in="query",
+     *          description="Boolean to define if he's a creator",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="classroom_id",
+     *          in="query",
+     *          description="Classroom of the user",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        //$request_sender = User::all()->where('api_token', $request->api_token)->first();
+        $request_sender = User::all()->where('api_token', $request->api_token)->first();
+
+        if ($user->api_token === $request->api_token) {
+            $user->fill($request->all());
+            $user->save();
+            return response()->json($user, 200);
+        } else if ($request->classroom_id != null && $request_sender->admin || $request_sender->creator) {
+            $user->classroom_id = $request->classroom_id;
+            $user->save();
+            return response()->json($user, 200);
+        } else {
+            return response()->json("Le token n'appartient pas a cet user ou il manque un champ", 401);
+        }
     }
+
+    /**
+     * @OA\DELETE(
+     *      path="/api/users/{user}",
+     *      tags={"Users"},
+     *      description="Delete one user",
+     *      @OA\Parameter(
+     *          name="api_token",
+     *          in="query",
+     *          description="User authentication",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="user",
+     *          in="path",
+     *          description="ID of the user to delete",
+     *          required=true,
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="successful without content",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="parameters are missing",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="not found",
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *          )
+     *      )
+     * )
+     */
 
     /**
      * Remove the specified resource from storage.
@@ -245,9 +431,10 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json("", 204);
     }
 
     /**
@@ -310,7 +497,7 @@ class UserController extends Controller
 
         $user = User::where('pseudo', $request->pseudo)->first();
         if ($user && Hash::check($request->password, $user->password)) {
-            return response()->json($user->api_token, 201);
+            return response()->json($user, 201);
         } else {
             return response()->json('Vos identifiants ne sont pas corrects', 401);
         }
