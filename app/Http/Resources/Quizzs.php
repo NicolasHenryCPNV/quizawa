@@ -22,6 +22,7 @@ class Quizzs extends JsonResource
             'active' => $this->active,
             'user_id' => $this->user_id,
             'image_quizzs' => $this->imageQuizzs,
+            // 'nb_question' => count($this->questions),
         ];
     }
 }

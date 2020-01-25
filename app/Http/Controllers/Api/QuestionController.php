@@ -65,7 +65,7 @@ class QuestionController extends Controller
      * @OA\POST(
      *      path="/api/questions",
      *      tags={"Questions"},
-     *      description="Store a question",
+     *      description="Create a question",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -211,7 +211,7 @@ class QuestionController extends Controller
      * @OA\PATCH(
      *      path="/api/questions/{question}",
      *      tags={"Questions"},
-     *      description="Store a question",
+     *      description="Update a question",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -230,17 +230,9 @@ class QuestionController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="question",
-     *          in="query",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ), 
-     *      @OA\Parameter(
      *          name="image",
      *          in="query",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -248,7 +240,7 @@ class QuestionController extends Controller
      *      @OA\Parameter(
      *          name="quizz_id",
      *          in="query",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="integer"
      *          )
@@ -297,7 +289,7 @@ class QuestionController extends Controller
      * @OA\DELETE(
      *      path="/api/questions/{question}",
      *      tags={"Questions"},
-     *      description="Show one question",
+     *      description="Delete one question",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -316,9 +308,9 @@ class QuestionController extends Controller
      *              type="integer"
      *          )
      *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="successful operation",
+     *       @OA\Response(
+     *          response=204,
+     *          description="successful without content",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )

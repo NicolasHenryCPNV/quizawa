@@ -213,21 +213,12 @@ class AnswerController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="value",
-     *          in="query",
-     *          description="Value of answer",
+     *          name="answer",
+     *          in="path",
+     *          description="ID of the answer to update",
      *          required=true,
      *          @OA\Schema(
-     *              type="string"
-     *          )
-     *      ),
-     *      @OA\Parameter(
-     *          name="correct",
-     *          in="query",
-     *          description="if he's correct",
-     *          required=true,
-     *          @OA\Schema(
-     *              type="string"
+     *              type="integer"
      *          )
      *      ),
      *      @OA\Parameter(
@@ -240,12 +231,21 @@ class AnswerController extends Controller
      *          )
      *      ),
      *      @OA\Parameter(
-     *          name="answer",
-     *          in="path",
-     *          description="ID of the answer to update",
-     *          required=true,
+     *          name="value",
+     *          in="query",
+     *          description="Value of answer",
+     *          required=false,
      *          @OA\Schema(
-     *              type="integer"
+     *              type="string"
+     *          )
+     *      ),
+     *      @OA\Parameter(
+     *          name="correct",
+     *          in="query",
+     *          description="if he's correct",
+     *          required=false,
+     *          @OA\Schema(
+     *              type="string"
      *          )
      *      ),
      *      @OA\Response(
@@ -292,7 +292,7 @@ class AnswerController extends Controller
      * @OA\DELETE(
      *      path="/api/answers/{answer}",
      *      tags={"Answers"},
-     *      description="delete one answer",
+     *      description="Delete one answer",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -312,8 +312,8 @@ class AnswerController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=200,
-     *          description="successful operation",
+     *          response=204,
+     *          description="successful without content",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )
