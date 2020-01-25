@@ -25,7 +25,3 @@ Will document the API
 
 ### Show swagger
 Swagger is our default view
-
-## Original repository
-
-You can check the original repository [here](https://github.com/CPNV-ES/KUIZAWA_api)
