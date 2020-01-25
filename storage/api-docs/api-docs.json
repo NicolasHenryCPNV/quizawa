@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Quizawa",
+        "title": "env('APP_NAME')",
         "description": "Listing the routes",
         "version": "1.0.0"
     },

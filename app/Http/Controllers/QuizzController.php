@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 /**
  *@OA\Info(
  *      description="Listing the routes",
- *      version="1.0.0",
- *      title="Quizawa",
+ *      version="1.1.0",
+ *      title="Kuizawa_api",
  *)
  */
 
