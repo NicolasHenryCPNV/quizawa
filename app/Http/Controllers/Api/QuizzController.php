@@ -66,7 +66,7 @@ class QuizzController extends Controller
      * @OA\POST(
      *      path="/api/quizzes",
      *      tags={"Quizzes"},
-     *      description="List of quizzes",
+     *      description="Create a quizz",
      *      @OA\Parameter(
      *          name="token",
      *          in="header",
@@ -203,7 +203,7 @@ class QuizzController extends Controller
      * @OA\PATCH(
      *      path="/api/quizzes/{quiz}",
      *      tags={"Quizzes"},
-     *      description="List of questions for a quizz",
+     *      description="Update a quizz",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -226,7 +226,7 @@ class QuizzController extends Controller
      *          name="title",
      *          in="query",
      *          description="Title of the quizz",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -235,7 +235,7 @@ class QuizzController extends Controller
      *          name="description",
      *          in="query",
      *          description="Description of the quizz",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -244,7 +244,7 @@ class QuizzController extends Controller
      *          name="image",
      *          in="query",
      *          description="Url of the image",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="string"
      *          )
@@ -253,7 +253,7 @@ class QuizzController extends Controller
      *          name="active",
      *          in="query",
      *          description="Status of the quizz",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="integer"
      *          )
@@ -262,7 +262,7 @@ class QuizzController extends Controller
      *          name="user_id",
      *          in="query",
      *          description="Owner of the quizz",
-     *          required=true,
+     *          required=false,
      *          @OA\Schema(
      *              type="integer"
      *          )
@@ -309,7 +309,7 @@ class QuizzController extends Controller
      * @OA\DELETE(
      *      path="/api/quizzes/{quiz}",
      *      tags={"Quizzes"},
-     *      description="List of questions for a quizz",
+     *      description="Delete a quizz",
      *      @OA\Parameter(
      *          name="api_token",
      *          in="query",
@@ -328,9 +328,9 @@ class QuizzController extends Controller
      *              type="integer"
      *          )
      *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="successful operation",
+     *       @OA\Response(
+     *          response=204,
+     *          description="successful without content",
      *          @OA\MediaType(
      *              mediaType="application/json",
      *          )

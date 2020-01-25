@@ -24,4 +24,5 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('users', 'Api\UserController')->except('store');
     Route::apiResource('classrooms', 'Api\ClassroomController');
     Route::get('quizzes/{quiz}/questions', 'Api\QuizzQuestionController@index')->name('quizzes.questions.index');
+    Route::get('classrooms/{classroom}/users', 'Api\ClassroomUserController@index')->name('classrooms.users.index');
 });
