@@ -25,3 +25,6 @@ Will document the API
 
 ### Show swagger
 Swagger is our default view
+
+### More documentation
+[Basics](./docs/addNewTable.md)
